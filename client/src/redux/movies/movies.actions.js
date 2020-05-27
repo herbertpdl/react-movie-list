@@ -10,7 +10,7 @@ export const fetchMovies = (title, page = 1) => {
 
     getMoviesByKeyword(title, page)
       .then((resp) => {
-        dispatch(setMoviesList(resp.Search || []))
+        dispatch(setMoviesList(resp))
 
         dispatch(setCurrentSearch(title))
 

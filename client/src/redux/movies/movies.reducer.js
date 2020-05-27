@@ -4,6 +4,8 @@ const INITIAL_STATE = {
   currentSearch: '',
   loadingMovies: false,
   moviesList: [],
+  totalResults: 0,
+  totalPages: 0,
 }
 
 const moviesReducer = (state = INITIAL_STATE, action) => {
@@ -11,7 +13,9 @@ const moviesReducer = (state = INITIAL_STATE, action) => {
     case MoviesActionTypes.SET_MOVIES_LIST:
       return {
         ...state,
-        moviesList: action.payload,
+        moviesList: action.payload.Search || [],
+        totalResults: action.payload.totalResults,
+        totalPages: Math.ceil(action.payload.totalResults/10), // Divide totalResults by 10 and rount to up
       }
     case MoviesActionTypes.SET_CURRENT_SEARCH:
       return {

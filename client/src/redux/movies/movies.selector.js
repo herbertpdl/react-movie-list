@@ -4,7 +4,7 @@ const selectMovies = state => state.movies
 
 export const selectMoviesList = createSelector(
   [selectMovies],
-  (movies) => movies.moviesList
+  (movies) => movies
 )
 
 export const selectLoadingMovies = createSelector(

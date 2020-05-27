@@ -1,18 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect';
+import { createStructuredSelector } from 'reselect'
 
 import { selectMoviesList, selectLoadingMovies } from '../../redux/movies/movies.selector'
+
+import { fetchMovies } from '../../redux/movies/movies.actions'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import FavoriteIcon from '@material-ui/icons/Favorite'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import Typography from '@material-ui/core/Typography'
 import Pagination from '@material-ui/lab/Pagination'
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    paddingBottom: 24,
+  },
   loaderWrapper: {
     position: 'absolute',
     display: 'flex',
@@ -29,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
     justifyContent: 'space-between',
     width: '100%',
+    marginBottom: 20,
     padding: '0 20px',
     boxSizing: 'border-box'
   },
@@ -59,18 +65,33 @@ const useStyles = makeStyles((theme) => ({
   favIcon: {
     display: 'block',
     marginLeft: 4,
+    cursor: 'pointer',
 
     '&.isFav': {
       color: 'red',
     }
-  }
+  },
+  pagination: {
+    width: 'fit-content',
+    margin: '0 auto',
+  },
 }))
 
-const CardList = ({ moviesList, loadingMovies }) => {
+const CardList = ({ movies, loadingMovies, dispatch }) => {
   const classes = useStyles()
 
+  const [page, setPage] = useState(1)
+
+  const handleSearch = (event, value) => {
+    const pageNumber = value
+
+    setPage(pageNumber)
+
+    dispatch(fetchMovies(movies.currentSearch, pageNumber))
+  }
+
   return (
-    <div>
+    <div className={classes.root}>
       { loadingMovies ?
         (
           <div className={classes.loaderWrapper}>
@@ -82,8 +103,8 @@ const CardList = ({ moviesList, loadingMovies }) => {
 
       <div className={classes.searchResult}>
 
-        {moviesList.map((movie, index) => (
-          <Card className={classes.card}>
+        {movies.moviesList.map((movie, index) => (
+          <Card className={classes.card} key={index}>
             <CardMedia
               className={classes.media}
               image={movie.Poster}
@@ -93,18 +114,31 @@ const CardList = ({ moviesList, loadingMovies }) => {
               { movie.Title }
             </Typography>
 
-            <FavoriteIcon className={classes.favIcon} />
+            <FavoriteBorderIcon className={classes.favIcon} />
           </Card>
         ))}
       </div>
 
-      <Pagination count={10} color="primary" />
+      {/* Pagination is shown only if has more than 10 results */}
+      {
+        movies.totalResults > 10 ?
+        (
+          <Pagination
+            className={classes.pagination}
+            color="primary"
+            count={movies.totalPages}
+            page={page}
+            onChange={handleSearch}
+          />
+        )
+        : null
+      }
     </div>
   )
 }
 
 const mapStateToProps = createStructuredSelector ({
-  moviesList: selectMoviesList,
+  movies: selectMoviesList,
   loadingMovies: selectLoadingMovies,
 })
 

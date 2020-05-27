@@ -12,9 +12,7 @@ import SearchIcon from '@material-ui/icons/Search'
 
 import { fetchMovies } from '../../redux/movies/movies.actions'
 
-import './search-input.scss'
-
-const styles = theme => ({
+const styles = () => ({
   searchInput: {
     width: '60%',
     height: 50,
@@ -68,9 +66,4 @@ SearchInput.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-
-const mapStateToProps = ({ moviesList = {} }) => ({
-  moviesList
-});
-
-export default connect(mapStateToProps, { fetchMovies })(withStyles(styles)(SearchInput))
+export default connect(null, { fetchMovies })(withStyles(styles)(SearchInput))
