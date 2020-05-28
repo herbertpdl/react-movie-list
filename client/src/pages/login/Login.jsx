@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
+
+import { setUserToken } from '../../redux/user/user.actions'
+
+import { logIn } from '../../services'
 
 import './login.scss';
 
@@ -13,6 +19,25 @@ class Login extends Component {
       email: '',
       password: '',
     }
+  }
+
+  handleData = (prop) => (event) => {
+    this.setState({
+      [prop]: event.target.value
+    })
+  }
+
+  logIn = () => {
+    logIn(this.state)
+      .then((resp) => {
+        const {setUserToken} = this.props
+
+        setUserToken(resp)
+
+        let { history } = this.props
+
+        history.push("/search")
+      });
   }
 
   render() {
@@ -35,6 +60,7 @@ class Login extends Component {
               label="e-mail"
               type="email"
               margin="normal"
+              onChange={this.handleData('email')}
             />
 
             <TextField
@@ -42,9 +68,15 @@ class Login extends Component {
               label="senha"
               type="password"
               margin="normal"
+              onChange={this.handleData('password')}
             />
 
-            <Button color="primary" size="large">
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={() => this.logIn()}
+            >
               Entrar
             </Button>
           </div>
@@ -54,4 +86,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default connect(null, { setUserToken })(Login)

@@ -29,9 +29,9 @@ class SearchInput extends Component {
 
     if (!this.debouncedFn) {
       this.debouncedFn = _.debounce(() => {
-        let string = event.target.value;
+        let string = event.target.value
 
-        const { fetchMovies } = this.props;
+        const { fetchMovies } = this.props
 
         fetchMovies(string);
 
