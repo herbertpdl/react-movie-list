@@ -9,3 +9,7 @@ export function logIn(data) {
   return HTTP.post('http://localhost:3001/login', data)
     .then(resp => resp)
 }
+
+export function getUserData(email) {
+  return HTTP.get(`http://localhost:3001/users/${email}`)
+}

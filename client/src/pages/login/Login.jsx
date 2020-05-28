@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 
 import { setUserToken } from '../../redux/user/user.actions'
 
-import { logIn } from '../../services'
+import { logIn, getUserData } from '../../services'
 
 import './login.scss';
 
@@ -27,12 +27,17 @@ class Login extends Component {
     })
   }
 
-  logIn = () => {
+  handleLogin = () => {
     logIn(this.state)
       .then((resp) => {
         const {setUserToken} = this.props
 
         setUserToken(resp)
+
+        // json-server-authentication middleware does not return data, just a token
+        // that's why we're using another endpoint to retrieve it
+        getUserData(1)
+          .then(resp => console.log(resp));
 
         let { history } = this.props
 
@@ -75,7 +80,7 @@ class Login extends Component {
               variant="contained"
               color="primary"
               size="large"
-              onClick={() => this.logIn()}
+              onClick={() => this.handleLogin()}
             >
               Entrar
             </Button>

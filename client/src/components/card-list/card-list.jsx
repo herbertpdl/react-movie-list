@@ -90,6 +90,22 @@ const CardList = ({ movies, loadingMovies, dispatch }) => {
     dispatch(fetchMovies(movies.currentSearch, pageNumber))
   }
 
+  const renderPagination = () => {
+    if (movies.totalResults <= 10) {
+      return null
+    }
+
+    return (
+      <Pagination
+        className={classes.pagination}
+        color="primary"
+        count={movies.totalPages}
+        page={page}
+        onChange={handleSearch}
+      />
+    )
+  }
+
   return (
     <div className={classes.root}>
       { loadingMovies ?
@@ -120,19 +136,8 @@ const CardList = ({ movies, loadingMovies, dispatch }) => {
       </div>
 
       {/* Pagination is shown only if has more than 10 results */}
-      {
-        movies.totalResults > 10 ?
-        (
-          <Pagination
-            className={classes.pagination}
-            color="primary"
-            count={movies.totalPages}
-            page={page}
-            onChange={handleSearch}
-          />
-        )
-        : null
-      }
+      { renderPagination() }
+
     </div>
   )
 }
