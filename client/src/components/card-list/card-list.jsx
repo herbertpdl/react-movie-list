@@ -6,6 +6,7 @@ import { selectMoviesList, selectLoadingMovies } from '../../redux/movies/movies
 import { selectUserData } from '../../redux/user/user.selector'
 
 import { fetchMovies } from '../../redux/movies/movies.actions'
+import { setUserData } from '../../redux/user/user.actions'
 
 import { updateFavoriteMovies } from '../../services'
 
@@ -46,6 +47,9 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
       /* We are sending password again, because
       json-server-auth will encrypt the encrypted passord again */
       updateFavoriteMovies({ ...data, password: '1234'})
+        .then(resp => {
+          dispatch(setUserData(resp));
+        })
     } else {
       // Push movie id to movies list
       data.favoritesMovies.push(id)
@@ -54,6 +58,9 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
       /* We are sending password again, because
       json-server-auth will encrypt the encrypted passord again */
       updateFavoriteMovies({ ...data, password: '1234'})
+        .then(resp => {
+          dispatch(setUserData(resp));
+        })
     }
   }
 
@@ -76,7 +83,7 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
   const renderFavoriteIcon = (id) => {
     if (userData.favoritesMovies.includes(id)) {
       return (
-        <FavoriteIcon className={classes.favIcon} onClick={() => handleFavoriteMovies(id)} />
+        <FavoriteIcon className={classes.favIconActive} onClick={() => handleFavoriteMovies(id)} />
       )
     }
 

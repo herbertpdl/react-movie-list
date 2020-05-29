@@ -13,11 +13,10 @@ const App = () => {
     <div className="App">
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route exact path="/search" component={Search} />
-        {/*<Route exact path="/search" render={() => (
-            <AuthRequired orRender={} />
+        <Route exact path="/search" render={() => (
+            <AuthRequired orRender={<Search />} />
           )}
-        /> */}
+        />
       </Switch>
     </div>
   );

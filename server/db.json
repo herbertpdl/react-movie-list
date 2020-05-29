@@ -2,8 +2,16 @@
   "users": [
     {
       "email": "desafio@juntoseguros.com",
-      "password": "$2a$10$f/2vgWBRb67nsSrHHlw6YuzFj5qDYKL7GqprkBrUGhh6XkeCWMaHK",
-      "name": "Herbert",
+      "password": "$2a$10$1W7wboAFOY5HyUUFvTFSbOIJA.nbWsghciuLuhyraji2N6jM9yaK2",
+      "name": "Herbert Lago",
+      "favoritesMovies": [
+        "tt0944947",
+        "tt1731141",
+        "tt4209788",
+        "tt1905041",
+        "tt0083929",
+        "tt1596343"
+      ],
       "id": 1
     }
   ]

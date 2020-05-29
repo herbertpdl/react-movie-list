@@ -52,10 +52,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     marginLeft: 4,
     cursor: 'pointer',
-
-    '&.isFav': {
-      color: 'red',
-    }
+  },
+  favIconActive: {
+    color: '#ff2c2b',
+    display: 'block',
+    marginLeft: 4,
+    cursor: 'pointer',
   },
   pagination: {
     width: 'fit-content',
