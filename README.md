@@ -1,14 +1,14 @@
-REACT MOVIE LIST
+#REACT MOVIE LIST
 
-- Installing the project
-    - Go to client folder and run yarn install
-    - Go to server folder and run yarn install
+## Installing the project
+    - Go to client folder and run 'yarn install'
+    - Go to server folder and run 'yarn install'
     
- - Running the project
-    - Go to client folder and run yarn start
-    - Go to server folder and run yarn start
+## Running the project
+    - Go to client folder and run 'yarn start'
+    - Go to server folder and run 'yarn start'
     
- - To login, you should use the following access
+## Logging-in
  
   - email: desafio@juntoseguros.com
   - password: 1234
