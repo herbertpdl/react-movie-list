@@ -15,7 +15,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case UserActionTypes.SET_USER_DATA:
       return {
         ...state,
-        userData: action.payload.data,
+        userData: action.payload,
       }
     default:
       return state

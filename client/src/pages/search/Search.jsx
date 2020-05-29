@@ -1,23 +1,30 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography';
 import SearchInput from '../../components/search-input/search-input'
 import CardList from '../../components/card-list/card-list'
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-}))
+import useStyles from './search.styles'
 
 const Search = () => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <SearchInput className={classes.searchInput} />
+      <div className={classes.titleContainer}>
+        <Typography
+          className={classes.title}
+          variant="h3"
+          component="h1"
+        >
+          OMDb
+
+          <span className={classes.subtitle}>
+            API
+          </span>
+        </Typography>
+      </div>
+      <SearchInput />
       <CardList />
     </div>
   )

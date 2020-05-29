@@ -3,86 +3,28 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import { selectMoviesList, selectLoadingMovies } from '../../redux/movies/movies.selector'
+import { selectUserData } from '../../redux/user/user.selector'
 
 import { fetchMovies } from '../../redux/movies/movies.actions'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { updateFavoriteMovies } from '../../services'
+
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
+import FavoriteIcon from '@material-ui/icons/Favorite'
 import Typography from '@material-ui/core/Typography'
 import Pagination from '@material-ui/lab/Pagination'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingBottom: 24,
-  },
-  loaderWrapper: {
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    flexGrow: 1,
-  },
-  searchResult: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, 225px)',
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: 'repeat(auto-fill, 150px)',
-    },
-    justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 20,
-    padding: '0 20px',
-    boxSizing: 'border-box'
-  },
-  card: {
-    maxWidth: 180,
-    marginBottom: '16px',
-    paddingBottom: 8,
-    [theme.breakpoints.down('md')]: {
-      maxWidth: 150,
-    },
-  },
-  media: {
-    width: 180,
-    height: 266,
-    marginBottom: 8,
-    backgroundSize: 'cover',
-    [theme.breakpoints.down('md')]: {
-      width: 150,
-    },
-  },
-  title: {
-    display: 'block',
-    marginLeft: 4,
-    marginBottom: 8,
-    textAlign: 'left',
-    fontSize: 14,
-  },
-  favIcon: {
-    display: 'block',
-    marginLeft: 4,
-    cursor: 'pointer',
+import useStyles from './card-list.styles.js'
 
-    '&.isFav': {
-      color: 'red',
-    }
-  },
-  pagination: {
-    width: 'fit-content',
-    margin: '0 auto',
-  },
-}))
-
-const CardList = ({ movies, loadingMovies, dispatch }) => {
+const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
   const classes = useStyles()
 
   const [page, setPage] = useState(1)
 
-  const handleSearch = (event, value) => {
+  const handleSearch = (event, value = 1) => {
     const pageNumber = value
 
     setPage(pageNumber)
@@ -90,8 +32,33 @@ const CardList = ({ movies, loadingMovies, dispatch }) => {
     dispatch(fetchMovies(movies.currentSearch, pageNumber))
   }
 
+  const handleFavoriteMovies = (id) => {
+    const data = userData
+
+    if (data.favoritesMovies.includes(id)) {
+      // Find movie id index
+      const index = data.favoritesMovies.indexOf(id)
+
+      // Remove movie id from list
+      data.favoritesMovies.splice(index, 1)
+
+      // Update in database
+      /* We are sending password again, because
+      json-server-auth will encrypt the encrypted passord again */
+      updateFavoriteMovies({ ...data, password: '1234'})
+    } else {
+      // Push movie id to movies list
+      data.favoritesMovies.push(id)
+
+      // Update in database
+      /* We are sending password again, because
+      json-server-auth will encrypt the encrypted passord again */
+      updateFavoriteMovies({ ...data, password: '1234'})
+    }
+  }
+
   const renderPagination = () => {
-    if (movies.totalResults <= 10) {
+    if (!movies.totalResults || loadingMovies) {
       return null
     }
 
@@ -103,6 +70,18 @@ const CardList = ({ movies, loadingMovies, dispatch }) => {
         page={page}
         onChange={handleSearch}
       />
+    )
+  }
+
+  const renderFavoriteIcon = (id) => {
+    if (userData.favoritesMovies.includes(id)) {
+      return (
+        <FavoriteIcon className={classes.favIcon} onClick={() => handleFavoriteMovies(id)} />
+      )
+    }
+
+    return (
+      <FavoriteBorderIcon className={classes.favIcon} onClick={() => handleFavoriteMovies(id)} />
     )
   }
 
@@ -130,7 +109,8 @@ const CardList = ({ movies, loadingMovies, dispatch }) => {
               { movie.Title }
             </Typography>
 
-            <FavoriteBorderIcon className={classes.favIcon} />
+            { renderFavoriteIcon(movie.imdbID) }
+
           </Card>
         ))}
       </div>
@@ -145,6 +125,7 @@ const CardList = ({ movies, loadingMovies, dispatch }) => {
 const mapStateToProps = createStructuredSelector ({
   movies: selectMoviesList,
   loadingMovies: selectLoadingMovies,
+  userData: selectUserData,
 })
 
 export default connect(mapStateToProps)(CardList)

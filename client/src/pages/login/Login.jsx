@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 
-import { setUserToken } from '../../redux/user/user.actions'
+import { setUserToken, setUserData } from '../../redux/user/user.actions'
 
 import { logIn, getUserData } from '../../services'
 
@@ -30,14 +30,16 @@ class Login extends Component {
   handleLogin = () => {
     logIn(this.state)
       .then((resp) => {
-        const {setUserToken} = this.props
+        const { setUserToken, setUserData } = this.props
 
         setUserToken(resp)
 
         // json-server-authentication middleware does not return data, just a token
         // that's why we're using another endpoint to retrieve it
         getUserData(1)
-          .then(resp => console.log(resp));
+          .then(resp => {
+            setUserData(resp);
+          });
 
         let { history } = this.props
 
@@ -91,4 +93,4 @@ class Login extends Component {
   }
 }
 
-export default connect(null, { setUserToken })(Login)
+export default connect(null, { setUserToken, setUserData })(Login)
