@@ -1,4 +1,4 @@
-#REACT MOVIE LIST
+# REACT MOVIE LIST
 
 ## Installing the project
     - Go to client folder and run yarn install
