@@ -8,7 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 
 export const SearcResultWrapper = styled.div`
-  padding-bottom: 24px;
+  padding: 0 20px 20px 20px;
 `
 
 export const CustomPagination = styled(Pagination) `
@@ -43,10 +43,9 @@ export const SearchResult = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 20px;
-  padding: 0 20px;
   box-sizing: border-box
 
-  @media only screen and (max-width: 1280px) {
+  @media(max-width: 1280px) {
     grid-template-columns: repeat(auto-fill, 150px);
   }
 `
@@ -55,7 +54,7 @@ export const MovieCard = styled(Card)`
   margin-bottom: 16px;
   padding-bottom: 8px;
 
-  @media only screen and (max-width: 1280px) {
+  @media(max-width: 1280px) {
     max-width: 150px;
   }
 `
@@ -66,7 +65,7 @@ export const MovieCardMedia = styled(CardMedia)`
   margin-bottom: 8px;
   background-size: 'cover';
 
-  @media only screen and (max-width: 1280px) {
+  @media(max-width: 1280px) {
     max-width: 150px;
   }
 `
