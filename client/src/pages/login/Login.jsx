@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
@@ -9,7 +9,7 @@ import { setUserToken, setUserData } from '../../redux/user/user.actions'
 
 import { logIn, getUserData } from '../../services'
 
-import './login.scss';
+import { LoginCard, LoginWrapper} from './login-styles.js';
 
 const Login = ({setUserToken, setUserData, history}) => {
   const [email, setEmail] = useState('')
@@ -33,18 +33,17 @@ const Login = ({setUserToken, setUserData, history}) => {
   }
 
   return (
-    <Grid
+    <LoginWrapper
       container
       justify="center"
       alignItems="center"
-      className="login--wrapper"
     >
       <Grid
         item
         xs={10}
         md={4}
       >
-        <div className="login--card">
+        <LoginCard>
           <p>Login</p>
           <TextField
             fullWidth
@@ -70,9 +69,9 @@ const Login = ({setUserToken, setUserData, history}) => {
           >
             Entrar
           </Button>
-        </div>
+        </LoginCard>
       </Grid>
-    </Grid>
+    </LoginWrapper>
   ) 
 }
 
