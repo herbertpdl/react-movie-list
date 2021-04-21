@@ -1,68 +1,79 @@
-import { makeStyles } from '@material-ui/core/styles'
+import styled from 'styled-components';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingBottom: 24,
-  },
-  loaderWrapper: {
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    flexGrow: 1,
-  },
-  searchResult: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, 225px)',
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: 'repeat(auto-fill, 150px)',
-    },
-    justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 20,
-    padding: '0 20px',
-    boxSizing: 'border-box'
-  },
-  card: {
-    maxWidth: 180,
-    marginBottom: '16px',
-    paddingBottom: 8,
-    [theme.breakpoints.down('md')]: {
-      maxWidth: 150,
-    },
-  },
-  media: {
-    width: 180,
-    height: 266,
-    marginBottom: 8,
-    backgroundSize: 'cover',
-    [theme.breakpoints.down('md')]: {
-      width: 150,
-    },
-  },
-  title: {
-    display: 'block',
-    marginLeft: 4,
-    marginBottom: 8,
-    textAlign: 'left',
-    fontSize: 14,
-  },
-  favIcon: {
-    display: 'block',
-    marginLeft: 4,
-    cursor: 'pointer',
-  },
-  favIconActive: {
-    color: '#ff2c2b',
-    display: 'block',
-    marginLeft: 4,
-    cursor: 'pointer',
-  },
-  pagination: {
-    width: 'fit-content',
-    margin: '0 auto',
-  },
-}))
+import Card from '@material-ui/core/Card'
+import CardMedia from '@material-ui/core/CardMedia'
+import Pagination from '@material-ui/lab/Pagination'
+import Typography from '@material-ui/core/Typography'
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 
-export default useStyles
+export const SearcResultWrapper = styled.div`
+  padding-bottom: 24px;
+`
+
+export const CustomPagination = styled(Pagination) `
+  width: fit-content;
+  margin: 0 auto;
+`
+
+export const FavIconActive = styled(FavoriteIcon) `
+  color: #ff2c2b;
+  display: block;
+  margin-left: 4px;
+  cursor: pointer;
+`
+export const FavIcon = styled(FavoriteBorderIcon) `
+  display: block;
+  margin-left: 4px;
+  cursor: pointer;
+`
+
+export const LoaderWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-grow: 1;
+`
+
+export const SearchResult = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 225px);
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  box-sizing: border-box
+
+  @media only screen and (max-width: 1280px) {
+    grid-template-columns: repeat(auto-fill, 150px);
+  }
+`
+export const MovieCard = styled(Card)`
+  max-width: 180px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+
+  @media only screen and (max-width: 1280px) {
+    max-width: 150px;
+  }
+`
+
+export const MovieCardMedia = styled(CardMedia)`
+  width: 180px;
+  height: 266px;
+  margin-bottom: 8px;
+  background-size: 'cover';
+
+  @media only screen and (max-width: 1280px) {
+    max-width: 150px;
+  }
+`
+export const MovieCardTitle = styled(Typography)`
+  display: block;
+  margin-left: 4px;
+  margin-bottom: 8px;
+  text-align: left;
+  font-size: 14px;
+`

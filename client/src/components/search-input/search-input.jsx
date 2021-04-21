@@ -23,11 +23,11 @@ const SearchInput = ({ classes, fetchMovies }) => {
   }, [inputValue])
 
   const handleSearch = () => {
-    if (inputValue && inputValue.length >= 3) {
+    if (inputValue && inputValue.length > 2) {
       fetchMovies(inputValue);
     }
   }
-  
+
   return (
     <div className={classes.searchInputWrapper}>
       <InputLabel htmlFor="search-input" className={classes.searchInputLabel}>

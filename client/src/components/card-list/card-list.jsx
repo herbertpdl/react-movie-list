@@ -10,19 +10,21 @@ import { setUserData } from '../../redux/user/user.actions'
 
 import { updateFavoriteMovies } from '../../services'
 
-import Card from '@material-ui/core/Card'
-import CardMedia from '@material-ui/core/CardMedia'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import Typography from '@material-ui/core/Typography'
-import Pagination from '@material-ui/lab/Pagination'
 
-import useStyles from './card-list.styles.js'
+import {
+  FavIcon,
+  MovieCard,
+  SearchResult,
+  FavIconActive,
+  LoaderWrapper,
+  MovieCardMedia,
+  MovieCardTitle,
+  CustomPagination,
+  SearcResultWrapper,
+} from './card-list.styles.js'
 
 const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
-  const classes = useStyles()
-
   const [page, setPage] = useState(1)
 
   const handleSearch = (event, value = 1) => {
@@ -43,26 +45,24 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
       // Remove movie id from list
       data.favoritesMovies.splice(index, 1)
 
-      // Update in database
-      /* We are sending password again, because
-      json-server-auth will encrypt the encrypted passord again */
-      updateFavoriteMovies({ ...data, password: '1234'})
-        .then(resp => {
-          dispatch(setUserData(resp));
-        })
+      updateMovies(data)
     } else {
       // Push movie id to movies list
       data.favoritesMovies.push(id)
 
-      // Update in database
-      /* We are sending password again, because
-      json-server-auth will encrypt the encrypted passord again */
-      updateFavoriteMovies({ ...data, password: '1234'})
-        .then(resp => {
-          dispatch(setUserData(resp));
-        })
+      updateMovies(data)
     }
   }
+
+  const updateMovies = (data) => {
+    // Update in database
+    /* We are sending password again, because
+       json-server-auth will encrypt the encrypted passord again */
+    updateFavoriteMovies({ ...data, password: '1234'})
+      .then(resp => {
+        dispatch(setUserData(resp));
+      })
+  }  
 
   const renderPagination = () => {
     if (!movies.totalResults || loadingMovies) {
@@ -70,8 +70,7 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
     }
 
     return (
-      <Pagination
-        className={classes.pagination}
+      <CustomPagination
         color="primary"
         count={movies.totalPages}
         page={page}
@@ -83,49 +82,47 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
   const renderFavoriteIcon = (id) => {
     if (userData.favoritesMovies.includes(id)) {
       return (
-        <FavoriteIcon className={classes.favIconActive} onClick={() => handleFavoriteMovies(id)} />
+        <FavIconActive onClick={() => handleFavoriteMovies(id)} />
       )
     }
 
     return (
-      <FavoriteBorderIcon className={classes.favIcon} onClick={() => handleFavoriteMovies(id)} />
+      <FavIcon onClick={() => handleFavoriteMovies(id)} />
     )
   }
 
   return (
-    <div className={classes.root}>
+    <SearcResultWrapper>
       { loadingMovies ?
         (
-          <div className={classes.loaderWrapper}>
+          <LoaderWrapper>
             <CircularProgress />
-          </div>
+          </LoaderWrapper>
         )
         : null
       }
 
-      <div className={classes.searchResult}>
-
+      <SearchResult>
         {movies.moviesList.map((movie, index) => (
-          <Card className={classes.card} key={index}>
-            <CardMedia
-              className={classes.media}
+          <MovieCard key={index}>
+            <MovieCardMedia
               image={movie.Poster}
             />
 
-            <Typography className={classes.title} noWrap >
+            <MovieCardTitle noWrap>
               { movie.Title }
-            </Typography>
+            </MovieCardTitle>
 
             { renderFavoriteIcon(movie.imdbID) }
 
-          </Card>
+          </MovieCard>
         ))}
-      </div>
+      </SearchResult>
 
       {/* Pagination is shown only if has more than 10 results */}
       { renderPagination() }
 
-    </div>
+    </SearcResultWrapper>
   )
 }
 

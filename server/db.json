@@ -1,16 +1,19 @@
 {
   "users": [
     {
-      "email": "desafio@juntoseguros.com",
-      "password": "$2a$10$1W7wboAFOY5HyUUFvTFSbOIJA.nbWsghciuLuhyraji2N6jM9yaK2",
+      "email": "dev@movies.com",
+      "password": "$2a$10$eWm28h3rTvpRVAsnqDGGROnllGFMB.cBkg2TqNf5V5fbRQGAMX6B2",
       "name": "Herbert Lago",
       "favoritesMovies": [
         "tt0944947",
         "tt1731141",
         "tt4209788",
-        "tt1905041",
         "tt0083929",
-        "tt1596343"
+        "tt1905041",
+        "tt1596343",
+        "tt1013752",
+        "tt9184994",
+        "tt0322259"
       ],
       "id": 1
     }
