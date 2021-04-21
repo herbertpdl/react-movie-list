@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
@@ -11,27 +11,14 @@ import { logIn, getUserData } from '../../services'
 
 import './login.scss';
 
-class Login extends Component {
-  constructor(props) {
-    super(props)
+const Login = ({setUserToken, setUserData, history}) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-    this.state = {
-      email: '',
-      password: '',
-    }
-  }
-
-  handleData = (prop) => (event) => {
-    this.setState({
-      [prop]: event.target.value
-    })
-  }
-
-  handleLogin = () => {
-    logIn(this.state)
+  const handleLogin = () => {
+    console.log(email, password)
+    logIn({email, password})
       .then((resp) => {
-        const { setUserToken, setUserData } = this.props
-
         setUserToken(resp)
 
         // json-server-authentication middleware does not return data, just a token
@@ -41,56 +28,52 @@ class Login extends Component {
             setUserData(resp);
           });
 
-        let { history } = this.props
-
         history.push("/search")
       });
   }
 
-  render() {
-    return (
+  return (
+    <Grid
+      container
+      justify="center"
+      alignItems="center"
+      className="login--wrapper"
+    >
       <Grid
-        container
-        justify="center"
-        alignItems="center"
-        className="login--wrapper"
+        item
+        xs={10}
+        md={4}
       >
-        <Grid
-          item
-          xs={10}
-          md={4}
-        >
-          <div className="login--card">
-            <p>Login</p>
-            <TextField
-              fullWidth
-              label="e-mail"
-              type="email"
-              margin="normal"
-              onChange={this.handleData('email')}
-            />
+        <div className="login--card">
+          <p>Login</p>
+          <TextField
+            fullWidth
+            label="e-mail"
+            type="email"
+            margin="normal"
+            onChange={e => setEmail(e.target.value)}
+          />
 
-            <TextField
-              fullWidth
-              label="senha"
-              type="password"
-              margin="normal"
-              onChange={this.handleData('password')}
-            />
+          <TextField
+            fullWidth
+            label="senha"
+            type="password"
+            margin="normal"
+            onChange={e => setPassword(e.target.value)}
+          />
 
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={() => this.handleLogin()}
-            >
-              Entrar
-            </Button>
-          </div>
-        </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={() => handleLogin()}
+          >
+            Entrar
+          </Button>
+        </div>
       </Grid>
-    )
-  }
+    </Grid>
+  ) 
 }
 
 export default connect(null, { setUserToken, setUserData })(Login)
