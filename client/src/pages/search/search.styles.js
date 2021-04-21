@@ -1,28 +1,29 @@
-import { makeStyles } from '@material-ui/core/styles'
+import styled from 'styled-components'
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  titleContainer: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    paddingTop: 20,
-    paddingLeft: 20,
-  },
-  title: {
-    color: '#191919',
-    fontWeight: 500,
-  },
-  subtitle: {
-    marginLeft: 8,
-    background: '-webkit-linear-gradient(90deg,#96f,#3c4ca0)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    fontSize: '1.5rem',
-  }
-}))
+import Typography from '@material-ui/core/Typography'
 
-export default useStyles
+export const SearchWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
+export const SearchTitleContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding-top: 20px;
+  padding-left: 20px;
+`
+
+export const SearchTitle = styled(Typography)`
+  color: #191919;
+  font-weight: 500; 
+`
+
+export const SearchSubtitle = styled.span`
+  margin-left: 8px;
+  background: linear-gradient(90deg,#96f,#3c4ca0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.5rem;
+`
