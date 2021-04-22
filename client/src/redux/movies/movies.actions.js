@@ -3,38 +3,29 @@ import MoviesActionTypes from './movies.types'
 import { getMoviesByKeyword } from '../../services/index'
 
 export const fetchMovies = (title, page = 1) => {
-  return (dispatch) => {
-    // Set loading status and reset movie list
-    dispatch(handleMoviesLoading());
-    dispatch(setMoviesList([]))
-
-    getMoviesByKeyword(title, page)
-      .then((resp) => {
-        dispatch(setMoviesList(resp))
-
-        dispatch(setCurrentSearch(title))
-
-        dispatch(handleMoviesLoading());
-      })
+  return {
+    type: MoviesActionTypes.FETCH_MOVIES,
+    payload: { title, page },
   }
 }
 
-function setMoviesList(data) {
+export function setMoviesList(data) {
   return {
     type: MoviesActionTypes.SET_MOVIES_LIST,
     payload: data,
   }
 }
 
-function setCurrentSearch(data) {
+export function setCurrentSearch(data) {
   return {
     type: MoviesActionTypes.SET_CURRENT_SEARCH,
     payload: data,
   }
 }
 
-function handleMoviesLoading() {
+export function handleMoviesLoading(data) {
   return {
     type: MoviesActionTypes.LOADING_MOVIES_LIST,
+    payload: data,
   }
 }

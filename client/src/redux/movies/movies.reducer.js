@@ -25,7 +25,7 @@ const moviesReducer = (state = INITIAL_STATE, action) => {
     case MoviesActionTypes.LOADING_MOVIES_LIST:
       return {
         ...state,
-        loadingMovies: !state.loadingMovies,
+        loadingMovies: action.payload,
       }
     default:
       return state
