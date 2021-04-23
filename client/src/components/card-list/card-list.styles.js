@@ -29,12 +29,16 @@ export const FavIcon = styled(FavoriteBorderIcon) `
 `
 
 export const LoaderWrapper = styled.div`
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   flex-grow: 1;
+  background-color: rgba(0, 0, 0, .3);
 `
 
 export const SearchResult = styled.div`

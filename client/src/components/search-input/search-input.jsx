@@ -24,7 +24,9 @@ const SearchInput = ({ classes, fetchMovies }) => {
 
   const handleSearch = () => {
     if (inputValue && inputValue.length > 2) {
-      fetchMovies(inputValue);
+      fetchMovies({
+        title: inputValue,
+      });
     }
   }
 

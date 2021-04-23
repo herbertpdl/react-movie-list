@@ -1,4 +1,4 @@
-import { takeLatest, put, all, call } from 'redux-saga/effects'
+import { takeLatest, put, all, call, delay } from 'redux-saga/effects'
 
 import MoviesActionTypes from './movies.types'
 
@@ -13,6 +13,10 @@ import { getMoviesByKeyword } from '../../services'
 export function* getMovieList({ payload }) {
 
   try {
+    if (!payload.fromPagination) {
+      yield delay(500)
+    }
+
     yield put(handleMoviesLoading(true))
   
     const movieList = yield getMoviesByKeyword(payload.title, payload.page)
@@ -30,6 +34,6 @@ export function* fetchMovies() {
   yield takeLatest(MoviesActionTypes.FETCH_MOVIES, getMovieList)
 }
 
-export function* moviesSagas() {
+export default function* moviesSagas() {
   yield all([call(fetchMovies)])
 }

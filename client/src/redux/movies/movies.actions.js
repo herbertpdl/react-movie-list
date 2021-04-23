@@ -1,11 +1,9 @@
 import MoviesActionTypes from './movies.types'
 
-import { getMoviesByKeyword } from '../../services/index'
-
-export const fetchMovies = (title, page = 1) => {
+export function fetchMovies({ title, page = 1, fromPagination = false}){
   return {
     type: MoviesActionTypes.FETCH_MOVIES,
-    payload: { title, page },
+    payload: { title, page, fromPagination },
   }
 }
 

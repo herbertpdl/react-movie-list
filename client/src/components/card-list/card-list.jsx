@@ -32,7 +32,11 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
 
     setPage(pageNumber)
 
-    dispatch(fetchMovies(movies.currentSearch, pageNumber))
+    dispatch(fetchMovies({
+      title: movies.currentSearch,
+      page: pageNumber,
+      fromPagination: true,
+    }))
   }
 
   const handleFavoriteMovies = (id) => {
