@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import _ from 'lodash'
 
-import { withStyles } from '@material-ui/styles';
 import Icon from '@material-ui/core/Icon'
-import OutlinedInput from '@material-ui/core/OutlinedInput'
-import InputLabel from '@material-ui/core/InputLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import SearchIcon from '@material-ui/icons/Search'
 
 import { fetchMovies } from '../../redux/movies/movies.actions'
 
-import styles from './search-input.styles'
+import { SearchInputWrapper, SearchInputLabel, CustomSearchInput } from './search-input.styles'
 
-const SearchInput = ({ classes, fetchMovies }) => {
+const SearchInput = ({ fetchMovies }) => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
@@ -31,13 +27,12 @@ const SearchInput = ({ classes, fetchMovies }) => {
   }
 
   return (
-    <div className={classes.searchInputWrapper}>
-      <InputLabel htmlFor="search-input" className={classes.searchInputLabel}>
+    <SearchInputWrapper>
+      <SearchInputLabel htmlFor="search-input">
         Digite o nome do filme ou série.
-      </InputLabel>
-      <OutlinedInput
+      </SearchInputLabel>
+      <CustomSearchInput
         id="search-input"
-        className={classes.searchInput}
         onChange={e => setInputValue(e.target.value)}
         endAdornment={
           <InputAdornment position="end">
@@ -49,12 +44,8 @@ const SearchInput = ({ classes, fetchMovies }) => {
           </InputAdornment>
         }
       />
-    </div>
+    </SearchInputWrapper>
   )
 }
 
-SearchInput.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default connect(null, { fetchMovies })(withStyles(styles)(SearchInput))
+export default connect(null, { fetchMovies })((SearchInput))
