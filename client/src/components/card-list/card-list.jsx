@@ -5,10 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import { selectMoviesList, selectLoadingMovies } from '../../redux/movies/movies.selector'
 import { selectUserData } from '../../redux/user/user.selector'
 
-import { fetchMovies } from '../../redux/movies/movies.actions'
-import { setUserData } from '../../redux/user/user.actions'
-
-import { updateFavoriteMovies } from '../../services'
+import { fetchMovies, handleFavoriteMovie } from '../../redux/movies/movies.actions'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -24,7 +21,7 @@ import {
   SearcResultWrapper,
 } from './card-list.styles.js'
 
-const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
+const CardList = ({ movies, loadingMovies, userData, fetchMovies, handleFavoriteMovie }) => {
   const [page, setPage] = useState(1)
 
   const handleSearch = (event, value = 1) => {
@@ -32,41 +29,12 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
 
     setPage(pageNumber)
 
-    dispatch(fetchMovies({
+    fetchMovies({
       title: movies.currentSearch,
       page: pageNumber,
       fromPagination: true,
-    }))
+    })
   }
-
-  const handleFavoriteMovies = (id) => {
-    const data = userData
-
-    if (data.favoritesMovies.includes(id)) {
-      // Find movie id index
-      const index = data.favoritesMovies.indexOf(id)
-
-      // Remove movie id from list
-      data.favoritesMovies.splice(index, 1)
-
-      updateMovies(data)
-    } else {
-      // Push movie id to movies list
-      data.favoritesMovies.push(id)
-
-      updateMovies(data)
-    }
-  }
-
-  const updateMovies = (data) => {
-    // Update in database
-    /* We are sending password again, because
-       json-server-auth will encrypt the encrypted passord again */
-    updateFavoriteMovies({ ...data, password: '1234'})
-      .then(resp => {
-        dispatch(setUserData(resp));
-      })
-  }  
 
   const renderPagination = () => {
     if (!movies.totalResults || loadingMovies) {
@@ -86,12 +54,12 @@ const CardList = ({ movies, loadingMovies, userData, dispatch }) => {
   const renderFavoriteIcon = (id) => {
     if (userData.favoritesMovies.includes(id)) {
       return (
-        <FavIconActive onClick={() => handleFavoriteMovies(id)} />
+        <FavIconActive onClick={() => handleFavoriteMovie(id)} />
       )
     }
 
     return (
-      <FavIcon onClick={() => handleFavoriteMovies(id)} />
+      <FavIcon onClick={() => handleFavoriteMovie(id)} />
     )
   }
 
@@ -136,4 +104,4 @@ const mapStateToProps = createStructuredSelector ({
   userData: selectUserData,
 })
 
-export default connect(mapStateToProps)(CardList)
+export default connect(mapStateToProps, { fetchMovies, handleFavoriteMovie })(CardList)

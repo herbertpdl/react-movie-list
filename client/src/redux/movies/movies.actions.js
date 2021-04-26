@@ -27,3 +27,10 @@ export function handleMoviesLoading(data) {
     payload: data,
   }
 }
+
+export function handleFavoriteMovie(data) {
+  return {
+    type: MoviesActionTypes.HANDLE_FAVORITE_MOVIE,
+    payload: data,
+  }
+}
