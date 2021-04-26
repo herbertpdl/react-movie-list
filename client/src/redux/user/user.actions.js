@@ -13,3 +13,10 @@ export function setUserData(data) {
     payload: data,
   }
 }
+
+export function loginUser({ data, history }) {
+  return {
+    type: UserActionTypes.LOGIN_USER,
+    payload: { data, history },
+  }
+}

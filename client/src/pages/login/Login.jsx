@@ -5,32 +5,13 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 
-import { setUserToken, setUserData } from '../../redux/user/user.actions'
-
-import { logIn, getUserData } from '../../services'
+import { loginUser } from '../../redux/user/user.actions'
 
 import { LoginCard, LoginWrapper} from './login-styles.js';
 
-const Login = ({setUserToken, setUserData, history}) => {
+const Login = ({loginUser, history}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const handleLogin = () => {
-    console.log(email, password)
-    logIn({email, password})
-      .then((resp) => {
-        setUserToken(resp)
-
-        // json-server-authentication middleware does not return data, just a token
-        // that's why we're using another endpoint to retrieve it
-        getUserData(1)
-          .then(resp => {
-            setUserData(resp);
-          });
-
-        history.push("/search")
-      });
-  }
 
   return (
     <LoginWrapper
@@ -65,7 +46,10 @@ const Login = ({setUserToken, setUserData, history}) => {
             variant="contained"
             color="primary"
             size="large"
-            onClick={() => handleLogin()}
+            onClick={() => loginUser({
+              data: { email, password },
+              history: history,
+            })}
           >
             Entrar
           </Button>
@@ -75,4 +59,4 @@ const Login = ({setUserToken, setUserData, history}) => {
   ) 
 }
 
-export default connect(null, { setUserToken, setUserData })(Login)
+export default connect(null, { loginUser })(Login)
