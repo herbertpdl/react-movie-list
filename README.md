@@ -10,7 +10,7 @@
     
 ## Logging-in
  
-  - email: desafio@juntoseguros.com
+  - email: dev@movies.com
   - password: 1234
 
 
