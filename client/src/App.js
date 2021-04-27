@@ -2,9 +2,9 @@ import React from 'react'
 
 import { Switch, Route } from 'react-router-dom'
 
-import Login from './pages/login/Login'
-import Search from './pages/search/Search'
-import AuthRequired from './components/auth-required/AuthRequired'
+import Login from './pages/login/login'
+import Search from './pages/search/search'
+import AuthRequired from './components/auth-required/auth-required'
 
 import './App.css'
 
