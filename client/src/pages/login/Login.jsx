@@ -1,19 +1,46 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { useQueryClient, useQuery, useMutation } from 'react-query'
 
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 
-import { loginUser } from '../../redux/user/user.actions'
+import { setUserToken } from '../../redux/user/user.actions'
 
 import { LoginCard, LoginWrapper} from './login-styles.js';
 
-const Login = ({loginUser, history}) => {
+import { logIn } from '../../services'
+
+const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  return (
+  const history = useHistory()
+  const dispatch = useDispatch()
+
+  // Access the client
+  const queryClient = useQueryClient()
+
+  // Queries
+  // const query = useQuery('login', logIn)
+
+  const { mutate, isLoading } = useMutation(logIn, {
+    onSuccess: ({ data: { accessToken } }) => {
+      dispatch(setUserToken(accessToken))
+      history.push('/search')
+    }
+  })
+
+  const handleLogin = () => {
+    mutate({
+      email,
+      password
+    })
+  }
+
+  return isLoading ? <div>Loading...</div> : (
     <LoginWrapper
       container
       justify="center"
@@ -46,10 +73,7 @@ const Login = ({loginUser, history}) => {
             variant="contained"
             color="primary"
             size="large"
-            onClick={() => loginUser({
-              data: { email, password },
-              history: history,
-            })}
+            onClick={handleLogin}
           >
             Entrar
           </Button>
@@ -59,4 +83,4 @@ const Login = ({loginUser, history}) => {
   ) 
 }
 
-export default connect(null, { loginUser })(Login)
+export default Login

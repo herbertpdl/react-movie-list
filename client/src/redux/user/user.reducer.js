@@ -10,7 +10,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case UserActionTypes.SET_USER_TOKEN:
       return {
         ...state,
-        userToken: action.payload.data.accessToken,
+        userToken: action.payload,
       }
     case UserActionTypes.SET_USER_DATA:
       return {
