@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams, useHistory} from 'react-router-dom'
+import { useQuery } from 'react-query'
 
 import SearchInput from '../../components/search-input/search-input'
 import CardList from '../../components/card-list/card-list'
+
+import { getMoviesByKeyword } from '../../services'
 
 import {
   SearchTitle,
@@ -10,7 +14,18 @@ import {
   SearchTitleContainer,
 } from './search.styles.js'
 
+import { debounce } from 'lodash'
+
 const Search = () => {
+  const history = useHistory()
+  const { movieTitle } = useParams()
+
+  const { data, isLoading } = useQuery(['getMovies', movieTitle], () => getMoviesByKeyword(movieTitle))
+  
+  const onSearch = debounce(({ title }) => {
+    history.push(title)
+  }, 300)
+
   return (
     <SearchWrapper>
       <SearchTitleContainer>
@@ -25,8 +40,10 @@ const Search = () => {
           </SearchSubtitle>
         </SearchTitle>
       </SearchTitleContainer>
-      <SearchInput />
-      <CardList />
+      <SearchInput onSearch={onSearch} initialValue={movieTitle} />
+      {
+        isLoading ? <div>Loading...</div> : <CardList movies={data?.Search} />
+      }
     </SearchWrapper>
   )
 }

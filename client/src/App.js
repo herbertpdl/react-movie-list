@@ -18,7 +18,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/search" render={() => (
+          <Route path="/search/:movieTitle?" render={() => (
               <AuthRequired orRender={<Search />} />
             )}
           />

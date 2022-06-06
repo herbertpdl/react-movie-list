@@ -21,7 +21,7 @@ import {
   SearcResultWrapper,
 } from './card-list.styles.js'
 
-const CardList = ({ movies, loadingMovies, userData, fetchMovies, handleFavoriteMovie }) => {
+const CardList = ({ movies = [], loadingMovies, userData, fetchMovies, handleFavoriteMovie }) => {
   const [page, setPage] = useState(1)
 
   const handleSearch = (event, value = 1) => {
@@ -51,17 +51,17 @@ const CardList = ({ movies, loadingMovies, userData, fetchMovies, handleFavorite
     )
   }
 
-  const renderFavoriteIcon = (id) => {
-    if (userData.favoritesMovies.includes(id)) {
-      return (
-        <FavIconActive onClick={() => handleFavoriteMovie(id)} />
-      )
-    }
+  // const renderFavoriteIcon = (id) => {
+  //   if (userData.favoritesMovies.includes(id)) {
+  //     return (
+  //       <FavIconActive onClick={() => handleFavoriteMovie(id)} />
+  //     )
+  //   }
 
-    return (
-      <FavIcon onClick={() => handleFavoriteMovie(id)} />
-    )
-  }
+  //   return (
+  //     <FavIcon onClick={() => handleFavoriteMovie(id)} />
+  //   )
+  // }
 
   return (
     <SearcResultWrapper>
@@ -75,7 +75,7 @@ const CardList = ({ movies, loadingMovies, userData, fetchMovies, handleFavorite
       }
 
       <SearchResult>
-        {movies.moviesList.map((movie, index) => (
+        {movies.map((movie, index) => (
           <MovieCard key={index}>
             <MovieCardMedia
               image={movie.Poster}
@@ -85,7 +85,7 @@ const CardList = ({ movies, loadingMovies, userData, fetchMovies, handleFavorite
               { movie.Title }
             </MovieCardTitle>
 
-            { renderFavoriteIcon(movie.imdbID) }
+            {/* { renderFavoriteIcon(movie.imdbID) } */}
 
           </MovieCard>
         ))}
@@ -104,4 +104,4 @@ const mapStateToProps = createStructuredSelector ({
   userData: selectUserData,
 })
 
-export default connect(mapStateToProps, { fetchMovies, handleFavoriteMovie })(CardList)
+export default CardList

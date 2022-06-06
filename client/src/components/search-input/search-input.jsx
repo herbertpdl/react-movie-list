@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-
-import _ from 'lodash'
+import { useDispatch } from 'react-redux'
 
 import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import SearchIcon from '@material-ui/icons/Search'
 
-import { fetchMovies } from '../../redux/movies/movies.actions'
-
 import { SearchInputWrapper, SearchInputLabel, CustomSearchInput } from './search-input.styles'
 
-const SearchInput = ({ fetchMovies }) => {
+const SearchInput = ({ onSearch, initialValue }) => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    handleSearch()
-  }, [inputValue])
+    setInputValue(initialValue)
+  }, [initialValue])
 
-  const handleSearch = () => {
-    if (inputValue && inputValue.length > 2) {
-      fetchMovies({
-        title: inputValue,
-      });
+  const handleSearch = ({ target: { value } }) => {
+    setInputValue(value)
+
+    if (value && value.length > 2) {
+      onSearch({
+        title: value,
+      })
     }
   }
 
@@ -33,7 +31,8 @@ const SearchInput = ({ fetchMovies }) => {
       </SearchInputLabel>
       <CustomSearchInput
         id="search-input"
-        onChange={e => setInputValue(e.target.value)}
+        onChange={handleSearch}
+        value={inputValue}
         endAdornment={
           <InputAdornment position="end">
             <Icon
@@ -48,4 +47,4 @@ const SearchInput = ({ fetchMovies }) => {
   )
 }
 
-export default connect(null, { fetchMovies })((SearchInput))
+export default SearchInput

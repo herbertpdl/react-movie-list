@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { useQueryClient, useQuery, useMutation } from 'react-query'
+import { useQuery, useMutation } from 'react-query'
 
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
@@ -19,12 +19,6 @@ const Login = () => {
 
   const history = useHistory()
   const dispatch = useDispatch()
-
-  // Access the client
-  const queryClient = useQueryClient()
-
-  // Queries
-  // const query = useQuery('login', logIn)
 
   const { mutate, isLoading } = useMutation(logIn, {
     onSuccess: ({ data: { accessToken } }) => {
