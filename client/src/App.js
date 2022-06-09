@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { QueryClientProvider, QueryClient } from 'react-query'
 
 import { Switch, Route } from 'react-router-dom'
-
-import Login from './pages/login'
-import Search from './pages/search'
-import AuthRequired from './components/auth-required/auth-required'
-
 import './App.css'
+
+const Login = lazy(() => import('./pages/login'))
+const AuthRequired = lazy(() => import('./components/auth-required/auth-required'))
+const Search = lazy(() => import('./pages/search'))
 
 const App = () => {
   // Create a client
@@ -16,13 +15,15 @@ const App = () => {
   return (
     <div className="App">
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route path="/search/:movieTitle?" render={() => (
-              <AuthRequired orRender={<Search />} />
-            )}
-          />
-        </Switch>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Route exact path="/" component={Login} />
+            <Route path="/search/:movieTitle?" render={() => (
+                <AuthRequired orRender={<Search />} />
+              )}
+            />
+          </Switch>
+        </Suspense>
       </QueryClientProvider>
     </div>
   );
