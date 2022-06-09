@@ -19,11 +19,23 @@ import { debounce } from 'lodash'
 const Search = () => {
   const history = useHistory()
   const { movieTitle } = useParams()
+  const [searchPage, setSearchPage] = useState(1)
 
-  const { data, isLoading } = useQuery(['getMovies', movieTitle], () => getMoviesByKeyword(movieTitle))
+  const { data, isLoading } = useQuery(
+    ['getMovies', movieTitle, searchPage],
+    () => getMoviesByKeyword(movieTitle, searchPage),
+    {
+      enabled: movieTitle?.length > 3,
+      keepPreviousData: true,
+    }
+  )
+
+  const changePage = (newPage) => {
+    setSearchPage(newPage)
+  }
   
   const onSearch = debounce(({ title }) => {
-    history.push(title)
+    history.push(`/search/${title}`)
   }, 300)
 
   return (
@@ -41,9 +53,13 @@ const Search = () => {
         </SearchTitle>
       </SearchTitleContainer>
       <SearchInput onSearch={onSearch} initialValue={movieTitle} />
-      {
-        isLoading ? <div>Loading...</div> : <CardList movies={data?.Search} />
-      }
+      <CardList
+        movies={data?.Search}
+        totalResults={data?.totalResults}
+        loadingMovies={isLoading}
+        currentPage={searchPage}
+        onPageChange={changePage}
+      />
     </SearchWrapper>
   )
 }

@@ -1,11 +1,4 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
-
-import { selectMoviesList, selectLoadingMovies } from '../../redux/movies/movies.selector'
-import { selectUserData } from '../../redux/user/user.selector'
-
-import { fetchMovies, handleFavoriteMovie } from '../../redux/movies/movies.actions'
+import React from 'react'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -21,57 +14,21 @@ import {
   SearcResultWrapper,
 } from './card-list.styles.js'
 
-const CardList = ({ movies = [], loadingMovies, userData, fetchMovies, handleFavoriteMovie }) => {
-  const [page, setPage] = useState(1)
-
+const CardList = ({ movies = [], loadingMovies, totalResults, onPageChange, currentPage }) => {
   const handleSearch = (event, value = 1) => {
-    const pageNumber = value
-
-    setPage(pageNumber)
-
-    fetchMovies({
-      title: movies.currentSearch,
-      page: pageNumber,
-      fromPagination: true,
-    })
+    onPageChange(value)
   }
 
-  const renderPagination = () => {
-    if (!movies.totalResults || loadingMovies) {
-      return null
-    }
-
-    return (
-      <CustomPagination
-        color="primary"
-        count={movies.totalPages}
-        page={page}
-        onChange={handleSearch}
-      />
-    )
-  }
-
-  // const renderFavoriteIcon = (id) => {
-  //   if (userData.favoritesMovies.includes(id)) {
-  //     return (
-  //       <FavIconActive onClick={() => handleFavoriteMovie(id)} />
-  //     )
-  //   }
-
-  //   return (
-  //     <FavIcon onClick={() => handleFavoriteMovie(id)} />
-  //   )
-  // }
+  const totalPages = Math.ceil( totalResults/10)
 
   return (
     <SearcResultWrapper>
-      { loadingMovies ?
+      { loadingMovies &&
         (
           <LoaderWrapper>
             <CircularProgress />
           </LoaderWrapper>
         )
-        : null
       }
 
       <SearchResult>
@@ -85,23 +42,24 @@ const CardList = ({ movies = [], loadingMovies, userData, fetchMovies, handleFav
               { movie.Title }
             </MovieCardTitle>
 
-            {/* { renderFavoriteIcon(movie.imdbID) } */}
-
           </MovieCard>
         ))}
       </SearchResult>
 
       {/* Pagination is shown only if has more than 10 results */}
-      { renderPagination() }
+      {
+       (!!totalResults && !loadingMovies) && (
+          <CustomPagination
+            color="primary"
+            count={totalPages}
+            page={currentPage}
+            onChange={handleSearch}
+          />
+       )
+      }
 
     </SearcResultWrapper>
   )
 }
-
-const mapStateToProps = createStructuredSelector ({
-  movies: selectMoviesList,
-  loadingMovies: selectLoadingMovies,
-  userData: selectUserData,
-})
 
 export default CardList
